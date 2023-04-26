@@ -14,14 +14,15 @@ class Channel:
         self.channel = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
-        self.url = self.channel['items'][0]['snippet']['thumbnails']['default']['url']
+        self.url = 'https://www.youtube.com/channel/UCMCgOm8GZkHp8zJ6l7_hIuA'
         self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
         self.description = self.channel['items'][0]['snippet']['description']
         self.view_count = self.channel['items'][0]['statistics']['viewCount']
 
     @property
-    def getter_channel_id(self) -> str:
+    def channel_id(self) -> str:
         return self.__channel_id
+
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         return self.channel
@@ -29,7 +30,7 @@ class Channel:
     def to_json(self, path):
         """Метод, сохраняющий в файл значения атрибутов экземпляра Channel"""
         self.path = path
-        with open(self.path, 'w') as file:
+        with open(self.path, 'w', encoding='utf-8') as file:
             return json.dump({
                 'title': self.title,
                 'description': self.description,
