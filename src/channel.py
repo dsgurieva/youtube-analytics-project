@@ -14,10 +14,41 @@ class Channel:
         self.channel = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
-        self.url = 'https://www.youtube.com/channel/UCMCgOm8GZkHp8zJ6l7_hIuA'
+        self.url = f'https://www.youtube.com/channel/{self.__channel_id}'
         self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
         self.description = self.channel['items'][0]['snippet']['description']
         self.view_count = self.channel['items'][0]['statistics']['viewCount']
+
+    def __str__(self):
+        """Возвращает название и ссылку на канал"""
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        """Реализует возможность сложения по количеству подписчиков"""
+        return int(self.subscriber_count) + int(other.subscriber_count)
+
+    def __sub__(self, other):
+        """Реализует возможность вычитания по количеству подписчиков"""
+        return int(self.subscriber_count) - int(other.subscriber_count)
+
+    def __gt__(self, other):
+        """Сравнивает количество подписчиков self>other по количеству подписчиков"""
+        return int(self.subscriber_count) > int(other.subscriber_count)
+
+    def __ge__(self, other):
+        """Сравнивает количество подписчиков self>=other по количеству подписчиков"""
+        return int(self.subscriber_count) >= int(other.subscriber_count)
+
+    def __lt__(self, other):
+        """Сравнивает количество подписчиков self<other по количеству подписчиков"""
+        return int(self.subscriber_count) < int(other.subscriber_count)
+
+    def __le__(self, other):
+        """Сравнивает количество подписчиков self<=other по количеству подписчиков"""
+        return int(self.subscriber_count) <= int(other.subscriber_count)
+    def __eq__(self, other):
+        """Сравнивает количество подписчиков self==other по количеству подписчиков"""
+        return int(self.subscriber_count) == int(other.subscriber_count)
 
     @property
     def channel_id(self) -> str:
@@ -46,8 +77,6 @@ class Channel:
         """Класс-метод, возвращающий объект для работы с YouTube API"""
         youtube = build('youtube', 'v3', developerKey=api_key)
         return youtube
-
-
 
 
 
